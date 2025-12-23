@@ -7,6 +7,7 @@ plugins {
     id("mihon.android.application")
     id("mihon.android.application.compose")
     id("com.github.zellius.shortcut-helper")
+    // Ho rimosso la riga con version "1.9.0" che causava il conflitto
     kotlin("plugin.serialization")
     alias(libs.plugins.aboutLibraries)
 }
@@ -289,6 +290,11 @@ dependencies {
     implementation(libs.leakcanary.plumber)
 
     testImplementation(kotlinx.coroutines.test)
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 }
 
 androidComponents {

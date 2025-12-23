@@ -70,5 +70,8 @@ class PreferenceModule(val app: Application) : InjektModule {
         addSingletonFactory {
             BasePreferences(app, get())
         }
+        addSingletonFactory {
+            eu.kanade.tachiyomi.data.sync.SyncPreferences(get())
+        }
     }
 }

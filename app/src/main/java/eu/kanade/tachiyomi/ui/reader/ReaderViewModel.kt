@@ -78,6 +78,7 @@ import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 import java.time.Instant
 import java.util.Date
+import eu.kanade.tachiyomi.data.sync.SyncManager
 
 /**
  * Presenter used by the activity to perform background operations.
@@ -559,6 +560,23 @@ class ReaderViewModel @JvmOverloads constructor(
 
     private suspend fun updateChapterProgressOnComplete(readerChapter: ReaderChapter) {
         readerChapter.chapter.read = true
+
+        // --- SYNC HOOK START ---
+        // Se il manga è caricato, inviamo la notifica al server
+        manga?.let { m ->
+            try {
+                eu.kanade.tachiyomi.data.sync.SyncManager.push(
+                    type = "read_progress",
+                    sourceId = m.source,
+                    mangaUrl = m.url,
+                    chapterNum = readerChapter.chapter.chapter_number
+                )
+            } catch (e: Exception) {
+                logcat(LogPriority.ERROR) { "Sync Error: ${e.message}" }
+            }
+        }
+        // --- SYNC HOOK END ---
+
         updateTrackChapterRead(readerChapter)
         deleteChapterIfNeeded(readerChapter)
 

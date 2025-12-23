@@ -22,6 +22,7 @@ import eu.kanade.presentation.util.LocalBackPress
 import eu.kanade.presentation.util.Screen
 import eu.kanade.presentation.util.isTabletUi
 import tachiyomi.presentation.core.components.TwoPanelBox
+import eu.kanade.presentation.more.settings.screen.SettingsSyncScreen
 
 class SettingsScreen(
     private val destination: Int? = null,
@@ -38,6 +39,7 @@ class SettingsScreen(
                     Destination.About.id -> AboutScreen
                     Destination.DataAndStorage.id -> SettingsDataScreen
                     Destination.Tracking.id -> SettingsTrackingScreen
+                    Destination.Sync.id -> SettingsSyncScreen
                     else -> SettingsMainScreen
                 },
                 onBackPressed = null,
@@ -83,5 +85,6 @@ class SettingsScreen(
         data object About : Destination(0)
         data object DataAndStorage : Destination(1)
         data object Tracking : Destination(2)
+        data object Sync : Destination(3)
     }
 }

@@ -49,6 +49,8 @@ import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.material.Scaffold
 import tachiyomi.presentation.core.i18n.stringResource
 import cafe.adriel.voyager.core.screen.Screen as VoyagerScreen
+import androidx.compose.material.icons.outlined.Cloud
+import eu.kanade.presentation.more.settings.screen.SettingsSyncScreen
 
 object SettingsMainScreen : Screen() {
 
@@ -195,6 +197,12 @@ object SettingsMainScreen : Screen() {
             subtitleRes = MR.strings.pref_downloads_summary,
             icon = Icons.Outlined.GetApp,
             screen = SettingsDownloadScreen,
+        ),
+        Item(
+            titleRes = MR.strings.label_settings,
+            subtitleRes = MR.strings.app_name,
+            icon = Icons.Outlined.Cloud,
+            screen = SettingsSyncScreen,
         ),
         Item(
             titleRes = MR.strings.pref_category_tracking,
