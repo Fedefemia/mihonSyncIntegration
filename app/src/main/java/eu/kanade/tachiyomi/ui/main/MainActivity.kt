@@ -103,6 +103,10 @@ import tachiyomi.presentation.core.components.material.Scaffold
 import tachiyomi.presentation.core.i18n.stringResource
 import tachiyomi.presentation.core.util.collectAsState
 import uy.kohesive.injekt.injectLazy
+import eu.kanade.tachiyomi.data.sync.SyncManager
+import eu.kanade.tachiyomi.data.sync.SyncPreferences
+import uy.kohesive.injekt.Injekt
+import uy.kohesive.injekt.api.get
 
 class MainActivity : BaseActivity() {
 
@@ -272,6 +276,24 @@ class MainActivity : BaseActivity() {
             lifecycleScope.launchIO {
                 chapterCache.clear()
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        try {
+            val syncPrefs = Injekt.get<SyncPreferences>()
+            if (syncPrefs.syncEnabled().get()) {
+                lifecycleScope.launch {
+                    try {
+                        SyncManager.performImmediateSync()
+                        syncPrefs.lastSyncDate().set(System.currentTimeMillis())
+                    } catch (e: Exception) {
+                    }
+                }
+            }
+        } catch (e: Exception) {
         }
     }
 

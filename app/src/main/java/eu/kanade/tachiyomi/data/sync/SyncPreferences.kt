@@ -9,7 +9,7 @@ class SyncPreferences(
 
     fun syncEnabled() = preferenceStore.getBoolean("pref_sync_enabled", false)
 
-    fun syncInterval() = preferenceStore.getInt("pref_sync_interval", 15)
-
     fun lastSyncDate() = preferenceStore.getLong("pref_sync_last_run", 0L)
+
+    fun syncInterval() = preferenceStore.getInt("sync_interval", 0)
 }

@@ -13,7 +13,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,12 +23,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import java.util.Date
-
-import androidx.hilt.navigation.compose.hiltViewModel
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-
 import eu.kanade.presentation.components.AppBar
 import tachiyomi.presentation.core.components.material.Scaffold
 import tachiyomi.i18n.MR
@@ -41,6 +38,7 @@ object SettingsSyncScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
+        val viewModel = rememberScreenModel { SyncViewModel() }
 
         Scaffold(
             topBar = {
@@ -55,7 +53,7 @@ object SettingsSyncScreen : Screen {
                     .padding(contentPadding)
                     .verticalScroll(rememberScrollState())
             ) {
-                SyncSettingsContent()
+                SyncSettingsContent(viewModel)
             }
         }
     }
@@ -63,7 +61,7 @@ object SettingsSyncScreen : Screen {
 
 @Composable
 private fun SyncSettingsContent(
-    viewModel: SyncViewModel = hiltViewModel()
+    viewModel: SyncViewModel
 ) {
     val state by viewModel.uiState.collectAsState()
 
@@ -93,8 +91,9 @@ private fun SyncSettingsContent(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Testo aggiornato per riflettere la nuova funzionalità
             Text(
-                text = "Sincronizzazione Automatica",
+                text = "Sincronizza all'apertura dell'App",
                 style = MaterialTheme.typography.bodyLarge
             )
             Switch(
@@ -105,25 +104,8 @@ private fun SyncSettingsContent(
             )
         }
 
-        // --- SEZIONE INTERVALLO ---
-        if (state.isSyncEnabled) {
-            Column {
-                Text(
-                    text = "Intervallo aggiornamento: ${state.syncInterval} minuti",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Slider(
-                    value = state.syncInterval.toFloat(),
-                    onValueChange = { newValue ->
-                        viewModel.updateInterval(newValue.toLong())
-                    },
-                    valueRange = 15f..1440f,
-                    steps = 10
-                )
-            }
-        }
+        // RIMOSSO SLIDER INTERVALLO
 
-        // --- SEZIONE AZIONI ---
         Button(
             onClick = { viewModel.forceSyncNow() },
             modifier = Modifier.fillMaxWidth(),
